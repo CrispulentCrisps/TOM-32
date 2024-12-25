@@ -1,0 +1,490 @@
+Custom CPU idea
+
+TOM-32
+
+Registers:
+
+				|-------------------------------|
+- A, B 			| General purpose registers		| 16 bits wide
+- C, D 			| Arithmetic registers			| 24 bits wide
+- W, X, Y, Z	| Address registers				| 32 bits wide
+- PC			| Program counter				| 32 bits wide
+- Status		| Status register				| 8 bits  wide
+				|-------------------------------|
+
+				|-------------------------------|
+- Stack			| from 0x00000800 to 0x00000000	|
+				|-------------------------------|
+
+Vectors:
+				|-------------------------------|
+- ERROR0		| 0xFFFFFFE4					| Error handler vector
+- ERROR1		| 0xFFFFFFE8					| Error handler vector
+- ERROR2		| 0xFFFFFFEC					| Error handler vector
+- ERROR3		| 0xFFFFFFF0					| Error handler vector
+- POWER			| 0xFFFFFFF4					| Entered when CPU is powered on
+- RESET			| 0xFFFFFFF8					| Entered when CPU is reset
+- NMI			| 0xFFFFFFFC					| Entered when video display hits bottom scanline
+				|-------------------------------|
+
+- Status	
+				|-------------------------------|
+				| $01 - Carry					|
+				| $02 - Zero					|
+				| $04 - Negative				|
+				| $08 - Overflow				|
+				| $10 - NMI						|
+				| $20 - Decimal					|
+				| $40 - NAN						|
+				| $80 - NAN						|
+				|-------------------------------|
+
+Instructions:
+				|-----------|-----------------------------------------------|-------------------|
+				| Name		| Description									| Arguments			|
+				|-----------|-----------------------------------------------|-------------------|
+- Load			|			|												|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| LDBA		| Load Byte into A								| Address			|
+				| LDWA		| Load Word into A								| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| LDBB  	| Load Byte into B								| Address			|
+				| LDWB  	| Load Word into B								| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| LDBC  	| Load Byte into C								| Address			|
+				| LDWC  	| Load Word into C								| Address			|
+				| LDLC  	| Load Long into C								| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| LDBD  	| Load Byte into D								| Address			|
+				| LDWD  	| Load Word into D								| Address			|
+				| LDLD  	| Load Long into D								| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| LDBW  	| Load Byte into W								| Address			|
+				| LDWW  	| Load Word into W								| Address			|
+				| LDLW  	| Load Long into W								| Address			|
+				| LDDW  	| Load Dual Word into W							| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| LDBX  	| Load Byte into X								| Address			|
+				| LDWX  	| Load Word into X								| Address			|
+				| LDLX  	| Load Long into X								| Address			|
+				| LDDX  	| Load Dual Word into X							| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| LDBY  	| Load Byte into Y								| Address			|
+				| LDWY  	| Load Word into Y								| Address			|
+				| LDLY  	| Load Long into Y								| Address			|
+				| LDDY  	| Load Dual Word into Y							| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| LDBZ  	| Load Byte into Z								| Address			|
+				| LDWZ  	| Load Word into Z								| Address			|
+				| LDLZ  	| Load Long into Z								| Address			|
+				| LDDZ  	| Load Dual Word into Z							| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| LPAB		| Load byte at A register address				|					|
+				| LPAW		| Load word at A register address				|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| LPBB		| Load byte at B register address				|					|
+				| LPBW		| Load word at B register address				|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| LPWB		| Load byte at W register address				|					|
+				| LPWW		| Load word at W register address				|					|
+				| LPWL		| Load long at W register address				|					|
+				| LPWD		| Load dword at W register address				|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| LPXB		| Load byte at X register address				|					|
+				| LPXW		| Load word at X register address				|					|
+				| LPXL		| Load long at X register address				|					|
+				| LPXD		| Load dword at X register address				|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| LPYB		| Load byte at Y register address				|					|
+				| LPYW		| Load word at Y register address				|					|
+				| LPYL		| Load long at Y register address				|					|
+				| LPYD		| Load dword at Y register address				|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| LPZB		| Load byte at Z register address				|					|
+				| LPZW		| Load word at Z register address				|					|
+				| LPZL		| Load long at Z register address				|					|
+				| LPZD		| Load dword at Z register address				|					|
+				|-----------|-----------------------------------------------|-------------------|
+- Store			|			|												|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| STBA		| Store Byte into A								| Address			|
+				| STWA		| Store Word into A								| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| STBB  	| Store Byte into B								| Address			|
+				| STWB  	| Store Word into B								| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| STBC  	| Store Byte into C								| Address			|
+				| STWC  	| Store Word into C								| Address			|
+				| STLC  	| Store Long into C								| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| STBC  	| Store Byte into D								| Address			|
+				| STWC  	| Store Word into D								| Address			|
+				| STLC  	| Store Long into D								| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| STBW  	| Store Byte into W								| Address			|
+				| STWW  	| Store Word into W								| Address			|
+				| STLW  	| Store Long into W								| Address			|
+				| STDW  	| Store Dual Word into W						| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| STBX  	| Store Byte into X								| Address			|
+				| STWX  	| Store Word into X								| Address			|
+				| STLX  	| Store Long into X								| Address			|
+				| STDX  	| Store Dual Word into X						| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| STBY  	| Store Byte into Y								| Address			|
+				| STWY  	| Store Word into Y								| Address			|
+				| STLY  	| Store Long into Y								| Address			|
+				| STDY  	| Store Dual Word into Y						| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| STBZ  	| Store Byte into Z								| Address			|
+				| STWZ  	| Store Word into Z								| Address			|
+				| STLZ  	| Store Long into Z								| Address			|
+				| STDZ  	| Store Dual Word into Z						| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| SPAB		| Store byte at A register address				|					|
+				| SPAW		| Store word at A register address				|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| SPBB		| Store byte at B register address				|					|
+				| SPBW		| Store word at B register address				|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| SPWB		| Store byte at W register address				|					|
+				| SPWW		| Store word at W register address				|					|
+				| SPWL		| Store long at W register address				|					|
+				| SPWD		| Store dword at W register address				|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| SPXB		| Store byte at X register address				|					|
+				| SPXW		| Store word at X register address				|					|
+				| SPXL		| Store long at X register address				|					|
+				| SPXD		| Store dword at X register address				|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| SPYB		| Store byte at Y register address				|					|
+				| SPYW		| Store word at Y register address				|					|
+				| SPYL		| Store long at Y register address				|					|
+				| SPYD		| Store dword at Y register address				|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| SPZB		| Store byte at Z register address				|					|
+				| SPZW		| Store word at Z register address				|					|
+				| SPZL		| Store long at Z register address				|					|
+				| SPZD		| Store dword at Z register address				|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| STZA		| Clear A										|					|
+				| STZB		| Clear B										|					|
+				| STZC		| Clear C										|					|
+				| STZD		| Clear D										|					|
+				| STZW		| Clear W										|					|
+				| STZX		| Clear X										|					|
+				| STZY		| Clear Y										|					|
+				| STZZ		| Clear Z										|					|
+				|-----------|-----------------------------------------------|-------------------|
+- Transfer		|			|												|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| SWAP  	| Swap contents between registers				| Reg 0, Reg 1		|
+				| TNSF		| Move contents from Reg 0 to Reg 1				| Reg 0, Reg 1		|
+				| XHLB		| Swap low and high byte values in register		| Reg 0				|
+				| XHLW		| Swap low and high word values in register		| Reg 0				|
+				|-----------|-----------------------------------------------|-------------------|
+- Arithmetic	|			|												|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| ADAB		| Add byte from location to A					| Address			|
+				| ADAW		| Add word from location to A					| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| ADBB		| Add byte from location to B					| Address			|
+				| ADBW		| Add word from location to B					| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| ADCB		| Add byte from location to C					| Address			|
+				| ADCW		| Add word from location to C					| Address			|
+				| ADCL		| Add long from location to C					| Address			|
+				| ADCD		| Add dual word from location to C				| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| ADDB		| Add byte from location to D					| Address			|
+				| ADDW		| Add word from location to D					| Address			|
+				| ADDL		| Add long from location to D					| Address			|
+				| ADDD		| Add dual word from location to D				| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| SBAB		| Sub byte from location to A					| Address			|
+				| SBAW		| Sub word from location to A					| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| SBBB		| Sub byte from location to B					| Address			|
+				| SBBW		| Sub word from location to B					| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| SBCB		| Sub byte from location to C					| Address			|
+				| SBCW		| Sub word from location to C					| Address			|
+				| SBCL		| Sub long from location to C					| Address			|
+				| SBCD		| Sub dual word from location to C				| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| SBDB		| Sub byte from location to D					| Address			|
+				| SBDW		| Sub word from location to D					| Address			|
+				| SBDL		| Sub long from location to D					| Address			|
+				| SBDD		| Sub dual word from location to D				| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| INCA		| Increment A register							|					|
+				| INCB		| Increment B register							|					|
+				| INCC		| Increment C register							|					|
+				| INCD		| Increment D register							|					|
+				| INCW		| Increment W register							|					|
+				| INCX		| Increment X register							|					|
+				| INCY		| Increment Y register							|					|
+				| INCZ		| Increment Z register							|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| DECA		| Decrement A register							|					|
+				| DECB		| Decrement B register							|					|
+				| DECC		| Decrement C register							|					|
+				| DECD		| Decrement D register							|					|
+				| DECW		| Decrement W register							|					|
+				| DECX		| Decrement X register							|					|
+				| DECY		| Decrement Y register							|					|
+				| DECZ		| Decrement Z register							|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| LSFA		| Bitshift A left								|					|
+				| LSFB		| Bitshift B left								|					|
+				| LSFC		| Bitshift C left								|					|
+				| LSFD		| Bitshift D left								|					|
+				| LSFW		| Bitshift W left								|					|
+				| LSFX		| Bitshift X left								|					|
+				| LSFY		| Bitshift Y left								|					|
+				| LSFZ		| Bitshift Z left								|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| RSFA		| Bitshift A right								|					|
+				| RSFB		| Bitshift B right								|					|
+				| RSFC		| Bitshift C right								|					|
+				| RSFD		| Bitshift D right								|					|
+				| RSFW		| Bitshift W right								|					|
+				| RSFX		| Bitshift X right								|					|
+				| RSFY		| Bitshift Y right								|					|
+				| RSFZ		| Bitshift Z right								|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| RLFA		| Roll A left									|					|
+				| RLFB		| Roll B left									|					|
+				| RLFC		| Roll C left									|					|
+				| RLFD		| Roll D left									|					|
+				| RLFW		| Roll W left									|					|
+				| RLFX		| Roll X left									|					|
+				| RLFY		| Roll Y left									|					|
+				| RLFZ		| Roll Z left									|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| RRFA		| Roll A right									|					|
+				| RRFB		| Roll B right									|					|
+				| RRFC		| Roll C right									|					|
+				| RRFD		| Roll D right									|					|
+				| RRFW		| Roll W right									|					|
+				| RRFX		| Roll X right									|					|
+				| RRFY		| Roll Y right									|					|
+				| RRFZ		| Roll Z right									|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| MLAB		| Multiply A with byte							| Address			|
+				| MLAW		| Multiply A with word							| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| MLBB		| Multiply B with byte							| Address			|
+				| MLBW		| Multiply B with word							| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| MLCB		| Multiply C with byte							| Address			|
+				| MLCW		| Multiply C with word							| Address			|
+				| MLCL		| Multiply C with long							| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| MLDB		| Multiply D with byte							| Address			|
+				| MLDW		| Multiply D with word							| Address			|
+				| MLDL		| Multiply D with long							| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| DVAB		| Divide A with byte							| Address			|
+				| DVAW		| Divide A with word							| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| DVBB		| Divide B with byte							| Address			|
+				| DVBW		| Divide B with word							| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| DVCB		| Divide C with byte							| Address			|
+				| DVCW		| Divide C with word							| Address			|
+				| DVCL		| Divide C with long							| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| DVDB		| Divide D with byte							| Address			|
+				| DVDW		| Divide D with word							| Address			|
+				| DVDL		| Divide D with long							| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+- Bitwise manip	|			|												|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| ANAB		| AND A with byte								| Address			|
+				| ANBB		| AND B with byte								| Address			|
+				| ANCB		| AND C with byte								| Address			|
+				| ANDB		| AND D with byte								| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| ANAW		| AND A with word								| Address			|
+				| ANBW		| AND B with word								| Address			|
+				| ANCW		| AND C with word								| Address			|
+				| ANDW		| AND D with word								| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| ANCL		| AND C with long								| Address			|
+				| ANDL		| AND D with long								| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| ORAB		| OR A with byte								| Address			|
+				| ORBB		| OR B with byte								| Address			|
+				| ORCB		| OR C with byte								| Address			|
+				| ORDB		| OR D with byte								| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| ORAW		| OR A with word								| Address			|
+				| ORBW		| OR B with word								| Address			|
+				| ORCW		| OR C with word								| Address			|
+				| ORDW		| OR D with word								| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| ORCL		| OR C with long								| Address			|
+				| ORDL		| OR D with long								| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| XRAB		| XOR A with byte								| Address			|
+				| XRBB		| XOR B with byte								| Address			|
+				| XRCB		| XOR C with byte								| Address			|
+				| XRDB		| XOR D with byte								| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| XRAW		| XOR A with word								| Address			|
+				| XRBW		| XOR B with word								| Address			|
+				| XRCW		| XOR C with word								| Address			|
+				| XRDW		| XOR D with word								| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| XRCL		| XOR C with long								| Address			|
+				| XRDL		| XOR D with long								| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| NTAB		| NOT A with byte								| Address			|
+				| NTBB		| NOT B with byte								| Address			|
+				| NTCB		| NOT C with byte								| Address			|
+				| NTDB		| NOT D with byte								| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| NTAW		| NOT A with word								| Address			|
+				| NTBW		| NOT B with word								| Address			|
+				| NTCW		| NOT C with word								| Address			|
+				| NTDW		| NOT D with word								| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| NTCL		| NOT C with long								| Address			|
+				| NTDL		| NOT D with long								| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+- Status		|			|												|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| CLRC		| Clear carry flag								|					|
+				| CLRO		| Clear overflow flag							|					|
+				| CLRZ		| Clear zero flag								|					|
+				| CLRN		| Clear negative flag							|					|
+				| CLRM		| NAND bits based off of byte value				| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| SETC		| Set carry flag								|					|
+				| SETO		| Set overflow flag								|					|
+				| SETZ		| Set zero flag									|					|
+				| SETN		| Set negative flag								|					|
+				| SETM		| OR bits based off of byte value				| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+- Compare		|			|												|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| CPAB		| Compare A with byte							| Address			|
+				| CPBB		| Compare B with byte							| Address			|
+				| CPCB		| Compare C with byte							| Address			|
+				| CPDB		| Compare D with byte							| Address			|
+				| CPWB		| Compare W with byte							| Address			|
+				| CPXB		| Compare X with byte							| Address			|
+				| CPYB		| Compare Y with byte							| Address			|
+				| CPZB		| Compare Z with byte							| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| CPAW		| Compare A with word							| Address			|
+				| CPBW		| Compare B with word							| Address			|
+				| CPCW		| Compare C with word							| Address			|
+				| CPDW		| Compare D with word							| Address			|
+				| CPWW		| Compare W with word							| Address			|
+				| CPXW		| Compare X with word							| Address			|
+				| CPYW		| Compare Y with word							| Address			|
+				| CPZW		| Compare Z with word							| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| CPCL		| Compare C with word							| Address			|
+				| CPDL		| Compare D with word							| Address			|
+				| CPWL		| Compare W with word							| Address			|
+				| CPXL		| Compare X with word							| Address			|
+				| CPYL		| Compare Y with word							| Address			|
+				| CPZL		| Compare Z with word							| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| CPWD		| Compare W with dual word						| Address			|
+				| CPXD		| Compare X with dual word						| Address			|
+				| CPYD		| Compare Y with dual word						| Address			|
+				| CPZD		| Compare Z with dual word						| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+- Branching		|			|												|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| BRAB		| Branch always to relative byte address		| Address			|
+				| BRCB		| Branch if carry to relative byte address		| Address			|
+				| BROB		| Branch if overflow to relative byte address	| Address			|
+				| BRZB		| Branch if zero to relative byte address		| Address			|
+				| BRNB		| Branch if negative to relative byte address	| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+				| BRAW		| Branch always to relative word address		| Address			|
+				| BRCW		| Branch if carry to relative word address		| Address			|
+				| BROW		| Branch if overflow to relative word address	| Address			|
+				| BRZW		| Branch if zero to relative word address		| Address			|
+				| BRNW		| Branch if negative to relative word address	| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+- Subroutines	|			|												|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| JPSB		| Jump to subroutine							| Address			|
+				| JPSC		| Jump to subroutine if carry set				| Address			|
+				| JPSO		| Jump to subroutine if overflow set			| Address			|
+				| JPSZ		| Jump to subroutine if zero set				| Address			|
+				| JPSN		| Jump to subroutine if negative set			| Address			|
+				| JER0		| Jump to ERROR0 Vector							|					|
+				| JER1		| Jump to ERROR1 Vector							|					|
+				| JER2		| Jump to ERROR2 Vector							|					|
+				| JER3		| Jump to ERROR3 Vector							|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| RTSB		| Return from subroutine						| Address			|
+				| RTSC		| Return from subroutine if carry set			| Address			|
+				| RTSO		| Return from subroutine if overflow set		| Address			|
+				| RTSZ		| Return from subroutine if zero set			| Address			|
+				| RTSN		| Return from subroutine if negative set		| Address			|
+				|-----------|-----------------------------------------------|-------------------|
+- Stack Manip	|			|												|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| PUTA		| Store contents of A to the stack				|					|
+				| PUTB		| Store contents of B to the stack				|					|
+				| PUTC		| Store contents of C to the stack				|					|
+				| PUTD		| Store contents of D to the stack				|					|
+				| PUTW		| Store contents of W to the stack				|					|
+				| PUTX		| Store contents of X to the stack				|					|
+				| PUTY		| Store contents of Y to the stack				|					|
+				| PUTZ		| Store contents of Z to the stack				|					|
+				| PUTS		| Store Status to stack							|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| PLLA		| Pull from stack and store to A				|					|
+				| PLLB		| Pull from stack and store to B				|					|
+				| PLLC		| Pull from stack and store to C				|					|
+				| PLLD		| Pull from stack and store to D				|					|
+				| PLLW		| Pull from stack and store to W				|					|
+				| PLLX		| Pull from stack and store to X				|					|
+				| PLLY		| Pull from stack and store to Y				|					|
+				| PLLZ		| Pull from stack and store to Z				|					|
+				| PLLS		| Pull from stack and store to Status			|					|
+				|-----------|-----------------------------------------------|-------------------|
+- Error checks	|			|												|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| ER0C		| Jump to ERROR0 vector if carry				|					|
+				| ER1C		| Jump to ERROR1 vector if carry				|					|
+				| ER2C		| Jump to ERROR2 vector if carry				|					|
+				| ER3C		| Jump to ERROR3 vector if carry				|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| ER0Z		| Jump to ERROR0 vector if zero					|					|
+				| ER1Z		| Jump to ERROR1 vector if zero					|					|
+				| ER2Z		| Jump to ERROR2 vector if zero					|					|
+				| ER3Z		| Jump to ERROR3 vector if zero					|					|
+				|-----------|-------------------------------------------------------------------|	
+				| ER0N		| Jump to ERROR0 vector if negative				|					|	
+				| ER1N		| Jump to ERROR1 vector if negative				|					|
+				| ER2N		| Jump to ERROR2 vector if negative				|					|
+				| ER3N		| Jump to ERROR3 vector if negative				|					|
+				|-----------|-----------------------------------------------|-------------------|	
+				| ER0O		| Jump to ERROR0 vector if overflow				|					|	
+				| ER1O		| Jump to ERROR1 vector if overflow				|					|
+				| ER2O		| Jump to ERROR2 vector if overflow				|					|
+				| ER3O		| Jump to ERROR3 vector if overflow				|					|
+				|-----------|-----------------------------------------------|-------------------|
+- Miscelanious	| 			| 												|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| NOOP		| No Operation									|					|
+				|-----------|-----------------------------------------------|-------------------|
+				| FLLA		| Fill section of memory with contents of A		| Address, length	|
+				| FLLB		| Fill section of memory with contents of B		| Address, length	|
+				| FLLC		| Fill section of memory with contents of C		| Address, length	|
+				| FLLD		| Fill section of memory with contents of D		| Address, length	|
+				| FLLW		| Fill section of memory with contents of W		| Address, length	|
+				| FLLX		| Fill section of memory with contents of X		| Address, length	|
+				| FLLY		| Fill section of memory with contents of Y		| Address, length	|
+				| FLLZ		| Fill section of memory with contents of Z		| Address, length	|
+				|-----------|-----------------------------------------------|-------------------|
